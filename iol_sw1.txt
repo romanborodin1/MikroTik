@@ -1,0 +1,170 @@
+iol_sw1#sh run
+Building configuration...
+
+Current configuration : 2049 bytes
+!
+! Last configuration change at 14:56:27 EET Wed May 6 2020
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname iol_sw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username roma privilege 15 secret 4 FTwzik3LgB/x.E9OcD/ZyctEYwSpk2Cic/TAYsVhUwA
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization exec default local
+aaa authorization commands 1 default local
+aaa authorization commands 15 default local
+!
+!
+!
+!
+!
+aaa session-id common
+clock timezone EET 2 0
+!
+ip cef
+!
+!
+ip domain-name local
+no ipv6 cef
+ipv6 multicast rpf use-bgp
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+interface Ethernet0/0
+ duplex auto
+ spanning-tree bpdufilter enable
+!
+interface Ethernet0/1
+ duplex auto
+!
+interface Ethernet0/2
+ duplex auto
+!
+interface Ethernet0/3
+ duplex auto
+!
+interface Ethernet1/0
+ duplex auto
+!
+interface Ethernet1/1
+ duplex auto
+!
+interface Ethernet1/2
+ duplex auto
+!
+interface Ethernet1/3
+ duplex auto
+!
+interface Ethernet2/0
+ duplex auto
+!
+interface Ethernet2/1
+ duplex auto
+!
+interface Ethernet2/2
+ duplex auto
+!
+interface Ethernet2/3
+ duplex auto
+!
+interface Ethernet3/0
+ duplex auto
+!
+interface Ethernet3/1
+ duplex auto
+!
+interface Ethernet3/2
+ duplex auto
+!
+interface Ethernet3/3
+ duplex auto
+!
+interface Serial4/0
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/1
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/2
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial4/3
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Vlan1
+ ip address 172.24.113.233 255.255.255.0
+!
+!
+no ip http server
+!
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner motd ^C
+
+IOL_SW1
+
+^C
+!
+line con 0
+ exec-timeout 300 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 300 0
+ logging synchronous
+ transport input ssh
+!
+end
+
+iol_sw1#

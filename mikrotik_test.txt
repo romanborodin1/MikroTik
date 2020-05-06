@@ -1,0 +1,32 @@
+[roma@mikrotik_test] > export compact
+# may/06/2020 13:22:28 by RouterOS 6.40.4
+# software id =
+#
+#
+#
+/interface bridge
+add name=br0-mgmt
+add name=br1-office
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/ip pool
+add name=pool-office ranges=192.168.30.50-192.168.30.200
+/ip dhcp-server
+add address-pool=pool-office disabled=no interface=br1-office name=\
+    dhcp-office
+/interface bridge port
+add bridge=br1-office interface=ether7
+add bridge=br0-mgmt interface=ether1
+/ip address
+add address=192.168.30.2/24 interface=br1-office network=192.168.30.0
+/ip dhcp-client
+add dhcp-options=hostname,clientid disabled=no interface=br0-mgmt
+/ip dhcp-server network
+add address=192.168.30.0/24 dns-server=8.8.8.8,8.8.4.4 domain=office.local \
+    gateway=192.168.30.1
+/system identity
+set name=mikrotik_test
+/system logging
+add topics=firewall,info
+add topics=ssh
+[roma@mikrotik_test] >

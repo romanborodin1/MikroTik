@@ -1,0 +1,26 @@
+[roma@mikrotik_sw3] > export compact
+# may/06/2020 13:48:05 by RouterOS 6.40.4
+# software id =
+#
+#
+#
+/interface bridge
+add name=br0-mgmt
+add name=bridge1
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/interface bridge port
+add bridge=br0-mgmt interface=ether1
+add bridge=bridge1 interface=ether2
+add bridge=bridge1 interface=ether3
+add bridge=bridge1 interface=ether4
+add bridge=bridge1 interface=ether5
+add bridge=bridge1 interface=ether6
+add bridge=bridge1 interface=ether7
+add bridge=bridge1 interface=ether8
+/ip dhcp-client
+add dhcp-options=hostname,clientid disabled=no interface=br0-mgmt
+add dhcp-options=hostname,clientid disabled=no interface=bridge1
+/system identity
+set name=mikrotik_sw3
+[roma@mikrotik_sw3] >
