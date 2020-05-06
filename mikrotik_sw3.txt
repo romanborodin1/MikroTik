@@ -1,5 +1,5 @@
-[roma@mikrotik_sw3] > export compact
-# may/06/2020 13:48:05 by RouterOS 6.40.4
+[admin@mikrotik_sw3] > export compact
+# may/06/2020 16:03:31 by RouterOS 6.45.8
 # software id =
 #
 #
@@ -23,4 +23,4 @@ add dhcp-options=hostname,clientid disabled=no interface=br0-mgmt
 add dhcp-options=hostname,clientid disabled=no interface=bridge1
 /system identity
 set name=mikrotik_sw3
-[roma@mikrotik_sw3] >
+[admin@mikrotik_sw3] >

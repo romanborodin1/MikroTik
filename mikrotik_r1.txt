@@ -1,5 +1,5 @@
-[roma@mikrotik_r1] > export compact
-# may/06/2020 15:19:29 by RouterOS 6.40.4
+[admin@mikrotik_r1] > export compact
+# may/06/2020 16:02:22 by RouterOS 6.45.8
 # software id =
 #
 #
@@ -7,15 +7,6 @@
 /interface bridge
 add name=br0-mgmt
 add name=bridge1
-/interface ethernet
-set [ find default-name=ether8 ] name=ether1
-set [ find default-name=ether1 ] name=ether2
-set [ find default-name=ether2 ] name=ether3
-set [ find default-name=ether3 ] name=ether4
-set [ find default-name=ether4 ] name=ether5
-set [ find default-name=ether5 ] name=ether6
-set [ find default-name=ether6 ] name=ether7
-set [ find default-name=ether7 ] name=ether8
 /interface vlan
 add interface=bridge1 name=bridge1.10 vlan-id=10
 add interface=bridge1 name=bridge1.20 vlan-id=20
@@ -60,4 +51,4 @@ add address=10.1.30.0/24 gateway=10.1.30.1
 add address=10.1.40.0/24 gateway=10.1.40.1
 /system identity
 set name=mikrotik_r1
-[roma@mikrotik_r1] >
+[admin@mikrotik_r1] >

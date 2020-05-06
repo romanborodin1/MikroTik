@@ -1,10 +1,5 @@
-[roma@mikrotik_sw2] > ip address print
-Flags: X - disabled, I - invalid, D - dynamic
- #   ADDRESS            NETWORK         INTERFACE
- 0 D 172.24.113.27/24   172.24.113.0    br0-mgmt
- 1 D 10.1.1.254/24      10.1.1.0        bridge1
-[roma@mikrotik_sw2] > export compact
-# may/06/2020 13:46:02 by RouterOS 6.40.4
+[admin@mikrotik_sw2] > export compact
+# may/06/2020 16:02:54 by RouterOS 6.45.8
 # software id =
 #
 #
@@ -12,15 +7,6 @@ Flags: X - disabled, I - invalid, D - dynamic
 /interface bridge
 add name=br0-mgmt
 add name=bridge1
-/interface ethernet
-set [ find default-name=ether8 ] name=ether1
-set [ find default-name=ether1 ] name=ether2
-set [ find default-name=ether2 ] name=ether3
-set [ find default-name=ether3 ] name=ether4
-set [ find default-name=ether4 ] name=ether5
-set [ find default-name=ether5 ] name=ether6
-set [ find default-name=ether6 ] name=ether7
-set [ find default-name=ether7 ] name=ether8
 /interface wireless security-profiles
 set [ find default=yes ] supplicant-identity=MikroTik
 /interface bridge port
@@ -37,4 +23,4 @@ add dhcp-options=hostname,clientid disabled=no interface=bridge1
 add dhcp-options=hostname,clientid disabled=no interface=br0-mgmt
 /system identity
 set name=mikrotik_sw2
-[roma@mikrotik_sw2] >
+[admin@mikrotik_sw2] >

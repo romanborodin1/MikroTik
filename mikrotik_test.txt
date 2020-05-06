@@ -1,5 +1,5 @@
-[roma@mikrotik_test] > export compact
-# may/06/2020 13:22:28 by RouterOS 6.40.4
+[admin@mikrotik_test] > export compact
+# may/06/2020 16:03:56 by RouterOS 6.45.8
 # software id =
 #
 #
@@ -26,7 +26,4 @@ add address=192.168.30.0/24 dns-server=8.8.8.8,8.8.4.4 domain=office.local \
     gateway=192.168.30.1
 /system identity
 set name=mikrotik_test
-/system logging
-add topics=firewall,info
-add topics=ssh
-[roma@mikrotik_test] >
+[admin@mikrotik_test] >
