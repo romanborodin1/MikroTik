@@ -1,5 +1,5 @@
-[admin@mikrotik_test] > export compact
-# may/06/2020 16:03:56 by RouterOS 6.45.8
+[roma@mikrotik_test] > export compact
+# may/07/2020 11:09:41 by RouterOS 6.45.8
 # software id =
 #
 #
@@ -12,8 +12,7 @@ set [ find default=yes ] supplicant-identity=MikroTik
 /ip pool
 add name=pool-office ranges=192.168.30.50-192.168.30.200
 /ip dhcp-server
-add address-pool=pool-office disabled=no interface=br1-office name=\
-    dhcp-office
+add address-pool=pool-office disabled=no interface=br1-office name=dhcp-office
 /interface bridge port
 add bridge=br1-office interface=ether7
 add bridge=br0-mgmt interface=ether1
@@ -22,8 +21,9 @@ add address=192.168.30.2/24 interface=br1-office network=192.168.30.0
 /ip dhcp-client
 add dhcp-options=hostname,clientid disabled=no interface=br0-mgmt
 /ip dhcp-server network
-add address=192.168.30.0/24 dns-server=8.8.8.8,8.8.4.4 domain=office.local \
-    gateway=192.168.30.1
+add address=192.168.30.0/24 dns-server=8.8.8.8,8.8.4.4 domain=office.local gateway=192.168.30.1
+/system clock
+set time-zone-name=Europe/Moscow
 /system identity
 set name=mikrotik_test
-[admin@mikrotik_test] >
+[roma@mikrotik_test] >

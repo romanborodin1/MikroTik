@@ -1,26 +1,35 @@
-[admin@mikrotik_sw2] > export compact
-# may/06/2020 16:02:54 by RouterOS 6.45.8
+[roma@mikrotik_sw2] > export compact
+# may/07/2020 11:03:46 by RouterOS 6.45.8
 # software id =
 #
 #
 #
 /interface bridge
 add name=br0-mgmt
-add name=bridge1
+add name=bridge1 pvid=10 vlan-filtering=yes
+/interface vlan
+add interface=bridge1 name=vlan10 vlan-id=10
+add interface=bridge1 name=vlan20 vlan-id=20
 /interface wireless security-profiles
 set [ find default=yes ] supplicant-identity=MikroTik
 /interface bridge port
-add bridge=bridge1 interface=ether2
-add bridge=bridge1 interface=ether3
-add bridge=bridge1 interface=ether4
-add bridge=bridge1 interface=ether5
-add bridge=bridge1 interface=ether6
-add bridge=bridge1 interface=ether7
-add bridge=bridge1 interface=ether8
+add bridge=bridge1 interface=ether2 pvid=10
+add bridge=bridge1 interface=ether3 pvid=10
+add bridge=bridge1 interface=ether4 pvid=10
+add bridge=bridge1 interface=ether5 pvid=10
+add bridge=bridge1 interface=ether6 pvid=10
+add bridge=bridge1 interface=ether7 pvid=20
+add bridge=bridge1 interface=ether8 pvid=10
 add bridge=br0-mgmt interface=ether1
+/interface bridge vlan
+add bridge=bridge1 tagged=bridge1,ether2 untagged=\
+    ether6,ether8,ether3,ether4,ether5 vlan-ids=10
+add bridge=bridge1 tagged=bridge1,ether2 untagged=ether7 vlan-ids=20
 /ip dhcp-client
 add dhcp-options=hostname,clientid disabled=no interface=bridge1
 add dhcp-options=hostname,clientid disabled=no interface=br0-mgmt
+/system clock
+set time-zone-autodetect=no time-zone-name=Europe/Moscow
 /system identity
 set name=mikrotik_sw2
-[admin@mikrotik_sw2] >
+[roma@mikrotik_sw2] >

@@ -1,12 +1,12 @@
 [admin@mikrotik_r1] > export compact
-# may/06/2020 16:02:22 by RouterOS 6.45.8
+# may/07/2020 10:59:37 by RouterOS 6.45.8
 # software id =
 #
 #
 #
 /interface bridge
 add name=br0-mgmt
-add name=bridge1
+add name=bridge1 pvid=10 vlan-filtering=yes
 /interface vlan
 add interface=bridge1 name=bridge1.10 vlan-id=10
 add interface=bridge1 name=bridge1.20 vlan-id=20
@@ -27,14 +27,19 @@ add address-pool=dhcp_pool3 disabled=no interface=bridge1.20 name=dhcp3
 add address-pool=dhcp_pool4 disabled=no interface=bridge1.30 name=dhcp4
 add address-pool=dhcp_pool5 disabled=no interface=bridge1.40 name=dhcp5
 /interface bridge port
-add bridge=bridge1 interface=ether5
-add bridge=bridge1 interface=ether3
-add bridge=bridge1 interface=ether6
-add bridge=bridge1 interface=ether7
-add bridge=bridge1 interface=ether8
-add bridge=bridge1 interface=ether4
+add bridge=bridge1 interface=ether5 pvid=10
+add bridge=bridge1 interface=ether3 pvid=10
+add bridge=bridge1 interface=ether6 pvid=10
+add bridge=bridge1 interface=ether7 pvid=10
+add bridge=bridge1 interface=ether8 pvid=10
+add bridge=bridge1 interface=ether4 pvid=10
 add bridge=br0-mgmt interface=ether1
-add bridge=bridge1 interface=ether2
+add bridge=bridge1 interface=ether2 pvid=10
+/interface bridge vlan
+add bridge=bridge1 tagged=bridge1,ether2,ether3 vlan-ids=10
+add bridge=bridge1 tagged=bridge1,ether2,ether3 vlan-ids=20
+add bridge=bridge1 tagged=bridge1,ether2,ether3 vlan-ids=30
+add bridge=bridge1 tagged=bridge1,ether2,ether3 vlan-ids=40
 /ip address
 add address=10.1.1.1/24 interface=bridge1 network=10.1.1.0
 add address=10.1.10.1/24 interface=bridge1.10 network=10.1.10.0
@@ -49,6 +54,8 @@ add address=10.1.10.0/24 gateway=10.1.10.1
 add address=10.1.20.0/24 gateway=10.1.20.1
 add address=10.1.30.0/24 gateway=10.1.30.1
 add address=10.1.40.0/24 gateway=10.1.40.1
+/system clock
+set time-zone-autodetect=no time-zone-name=Europe/Moscow
 /system identity
 set name=mikrotik_r1
 [admin@mikrotik_r1] >
