@@ -1,15 +1,15 @@
-[roma@mikrotik_sw2] > export compact
-# may/07/2020 11:03:46 by RouterOS 6.45.8
+[admin@mikrotik_sw2] > export compact
+# may/07/2020 15:28:20 by RouterOS 6.45.8
 # software id =
 #
 #
 #
 /interface bridge
-add name=br0-mgmt
-add name=bridge1 pvid=10 vlan-filtering=yes
+add name=bridge1 pvid=77 vlan-filtering=yes
 /interface vlan
 add interface=bridge1 name=vlan10 vlan-id=10
 add interface=bridge1 name=vlan20 vlan-id=20
+add interface=bridge1 name=vlan77 vlan-id=77
 /interface wireless security-profiles
 set [ find default=yes ] supplicant-identity=MikroTik
 /interface bridge port
@@ -20,16 +20,20 @@ add bridge=bridge1 interface=ether5 pvid=10
 add bridge=bridge1 interface=ether6 pvid=10
 add bridge=bridge1 interface=ether7 pvid=20
 add bridge=bridge1 interface=ether8 pvid=10
-add bridge=br0-mgmt interface=ether1
+add bridge=bridge1 interface=ether1 pvid=77
 /interface bridge vlan
 add bridge=bridge1 tagged=bridge1,ether2 untagged=\
     ether6,ether8,ether3,ether4,ether5 vlan-ids=10
 add bridge=bridge1 tagged=bridge1,ether2 untagged=ether7 vlan-ids=20
+add bridge=bridge1 tagged=ether2 untagged=bridge1 vlan-ids=77
 /ip dhcp-client
 add dhcp-options=hostname,clientid disabled=no interface=bridge1
-add dhcp-options=hostname,clientid disabled=no interface=br0-mgmt
 /system clock
 set time-zone-autodetect=no time-zone-name=Europe/Moscow
 /system identity
 set name=mikrotik_sw2
-[roma@mikrotik_sw2] >
+[admin@mikrotik_sw2] > ip address print
+Flags: X - disabled, I - invalid, D - dynamic
+ #   ADDRESS            NETWORK         INTERFACE
+ 0 D 172.24.113.26/24   172.24.113.0    bridge1
+[admin@mikrotik_sw2] >
