@@ -1,0 +1,18 @@
+This repo contains settings of test stend with Mikrotik Equipment.
+
+Physical equipment:
+name:   model:
+SW1     CRS125-24G-1S
+SW2     CRS125-24G-1S
+R1      2011UiAS-2HnD
+
+
+SW1 serial0 <---> PC IT047306 UCB-COM
+
+SW1 eth1 <---> 3560-R223-S11-26 fa0/8
+SW1 eth2 <---> SW2 eth1
+SW1 eth3 <---> R1 eth1
+
+SW1 eth24 <---> SW2 eth24
+SW1 eth23 <---> R1 eth10
+SW2 eth23 <---> R1 eth9
