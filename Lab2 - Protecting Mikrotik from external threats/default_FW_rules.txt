@@ -1,0 +1,38 @@
+/ip firewall address-list
+add address=testdomain.ddns.net list=management
+add address=172.24.68.0/23 list=management
+
+/ip firewall filter
+add action=accept chain=input comment=Established/Related connection-state=\
+    established,related
+add action=drop chain=input comment="Drop invalid" connection-state=invalid \
+    in-interface-list=WAN
+add action=accept chain=input comment=OpenVPN dst-port=1194 \
+    in-interface-list=WAN protocol=tcp
+add action=accept chain=input comment=WinBox dst-port=8291,22 \
+    in-interface-list=WAN protocol=tcp src-address-list=management
+add action=add-src-to-address-list address-list=scanner address-list-timeout=\
+    1w chain=forward comment="PortScanner detection" in-interface-list=WAN \
+    protocol=tcp psd=10,3s,3,1
+add action=add-src-to-address-list address-list=black_list \
+    address-list-timeout=1d chain=forward comment="DoS protection" \
+    connection-limit=10,32 in-interface-list=WAN log=yes protocol=tcp
+add action=tarpit chain=forward comment="DoS protection" connection-limit=\
+    10,32 in-interface-list=WAN log=yes protocol=tcp src-address-list=\
+    black_list
+add action=jump chain=input comment="ICMP accept rules" in-interface-list=WAN \
+    jump-target=ICMP limit=5,5:packet protocol=icmp
+add action=accept chain=ICMP icmp-options=0:0 protocol=icmp
+add action=accept chain=ICMP icmp-options=0:8 protocol=icmp
+add action=accept chain=ICMP icmp-options=11:0 protocol=icmp
+add action=accept chain=ICMP icmp-options=3:4 protocol=icmp
+add action=accept chain=ICMP icmp-options=3:3 protocol=icmp
+add action=accept chain=input comment="DNS protection" dst-port=53 \
+    in-interface=bridge1-LAN limit=10,15:packet protocol=udp
+add action=drop chain=input comment="Drop all other pachets"
+
+/ip firewall nat
+add action=src-nat chain=srcnat dst-address=!192.168.0.0/16 out-interface=\
+    bridge-WAN src-address=192.168.0.0/16 to-addresses=172.24.68.121
+add action=src-nat chain=srcnat dst-address=!192.168.0.0/16 out-interface=\
+    bridge-WAN src-address=192.168.0.0/16 to-addresses=172.24.68.121
