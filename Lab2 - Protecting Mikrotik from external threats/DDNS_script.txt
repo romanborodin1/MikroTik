@@ -1,0 +1,21 @@
+###########Script Settings###########
+:local NOIPUser "romchegue"
+:local NOIPPass "*********"
+:local WANInter "bridge-WAN"
+################################
+
+:local NOIPDomain "testdomain1.ddns.net"
+:local IpCurrent [/ip address get [find interface=$WANInter] address];
+:for i from=( [:len $IpCurrent] - 1 ) to=0 do={
+    :if ( [:pick $IpCurrent $i] = "/") do={
+        :local NewIP [:pick $IpCurrent 0 $i];
+        :if ([:resolve $NOIPDomain] != $NewIP) do={
+            /tool fetch mode=http url="http://$NOIPUser:$NOIPPass@dynupdate.no-ip.com/nic/update?hostname=$NOIPDomain&myip=$NewIP" keep-result=no
+            :log info "NO-IP Update: $NOIPDomain - $NewIP"
+        }
+    }
+} 
+
+
+
+#http://romchegue:*********@dynupdate.no-ip.com/nic/update?hostname=testdomain1.ddns.net&myip=10.8.8.8
