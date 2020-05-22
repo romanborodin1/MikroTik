@@ -1,0 +1,88 @@
+[roma@SW1] > export compact 
+# may/22/2020 13:09:33 by RouterOS 6.46.6
+# software id = T5E2-YQAB
+#
+# model = CRS125-24G-1S
+# serial number = 945008BCA4E7
+/interface bridge
+add admin-mac=CC:2D:E0:90:4B:AA auto-mac=no name=BR_MAIN priority=0x1000
+add admin-mac=CC:2D:E0:90:4B:BB auto-mac=no name=BR_XXX_WAN
+/interface ethernet
+set [ find default-name=ether8 ] name=ether8_R1_WAN
+set [ find default-name=ether12 ] name=ether12_R1
+set [ find default-name=ether21 ] name=ether21_SW2
+set [ find default-name=ether22 ] disabled=yes name=ether22_SW2
+set [ find default-name=ether24 ] comment=WAN name=ether24_WAN
+/interface vlan
+add interface=BR_MAIN name=vlan30 vlan-id=30
+add interface=BR_MAIN name=vlan31 vlan-id=31
+/interface ethernet switch
+set drop-if-invalid-or-src-port-not-member-of-vlan-on-ports=ether12_R1,ether22_SW2,ether23
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/ip pool
+add name=dhcp_pool_vlan30 ranges=192.168.30.20-192.168.30.254
+add name=dhcp_pool_vlan31 ranges=172.16.31.20-172.16.31.254
+/ip dhcp-server
+add address-pool=dhcp_pool_vlan30 disabled=no interface=vlan30 lease-time=1h name=dhcp_vlan30
+add address-pool=dhcp_pool_vlan31 disabled=no interface=vlan31 lease-time=40m name=dhcp_vlan31
+/interface bridge port
+add bridge=BR_MAIN interface=ether1
+add bridge=BR_MAIN interface=ether2
+add bridge=BR_MAIN interface=ether3
+add bridge=BR_MAIN interface=ether4
+add bridge=BR_MAIN interface=ether5
+add bridge=BR_MAIN interface=ether6
+add bridge=BR_MAIN interface=ether7
+add bridge=BR_MAIN interface=ether9
+add bridge=BR_MAIN interface=ether10
+add bridge=BR_MAIN interface=ether11
+add bridge=BR_MAIN interface=ether13
+add bridge=BR_MAIN interface=ether14
+add bridge=BR_MAIN interface=ether15
+add bridge=BR_MAIN interface=ether16
+add bridge=BR_MAIN interface=ether17
+add bridge=BR_MAIN interface=ether18
+add bridge=BR_MAIN interface=ether19
+add bridge=BR_MAIN interface=ether20
+add bridge=BR_MAIN interface=ether21_SW2
+add bridge=BR_MAIN interface=ether22_SW2
+add bridge=BR_MAIN interface=sfp1
+add bridge=BR_XXX_WAN interface=ether24_WAN
+add bridge=BR_XXX_WAN interface=ether8_R1_WAN
+add bridge=BR_MAIN interface=ether12_R1
+/ip neighbor discovery-settings
+set discover-interface-list=all
+/interface ethernet switch egress-vlan-tag
+add tagged-ports=switch1-cpu vlan-id=30
+add tagged-ports=ether12_R1,switch1-cpu vlan-id=31
+/interface ethernet switch ingress-vlan-translation
+add customer-vid=0 new-customer-vid=30 ports=ether12_R1,ether21_SW2,ether22_SW2
+/interface ethernet switch vlan
+add ports=ether12_R1,ether21_SW2,ether22_SW2,switch1-cpu vlan-id=30
+add ports=ether12_R1,ether21_SW2,ether22_SW2,switch1-cpu vlan-id=31
+/ip address
+add address=172.16.31.1/24 interface=vlan31 network=172.16.31.0
+add address=192.168.30.1/24 interface=vlan30 network=192.168.30.0
+/ip dhcp-client
+add disabled=no interface=BR_XXX_WAN
+/ip dhcp-server network
+add address=172.16.31.0/24 dns-server=172.16.31.1 gateway=172.16.31.1
+add address=192.168.30.0/24 dns-server=192.168.30.1 gateway=192.168.30.1
+/ip dns
+set allow-remote-requests=yes
+/ip firewall nat
+add action=masquerade chain=srcnat dst-address=!192.168.0.0/16 out-interface=BR_XXX_WAN src-address=192.168.0.0/16
+add action=masquerade chain=srcnat out-interface=BR_XXX_WAN src-address=172.24.31.0/24
+/ip service
+set telnet disabled=yes
+set ftp disabled=yes
+set www disabled=yes
+set api disabled=yes
+set api-ssl disabled=yes
+/system clock
+set time-zone-name=Europe/Moscow
+/system identity
+set name=SW1
+/system logging
+add action=echo topics=info

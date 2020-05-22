@@ -1,0 +1,66 @@
+[roma@R1] > export compact
+# may/22/2020 14:14:31 by RouterOS 6.46.6
+# software id = VSAS-YGQ8
+#
+# model = 2011UiAS-2HnD
+# serial number = 7A670884916F
+/interface bridge
+add admin-mac=CC:2D:E0:39:CD:AA auto-mac=no name=BR_MAIN vlan-filtering=yes
+add name=BR_XXX_WAN
+/interface ethernet
+set [ find default-name=ether1 ] name=ether1_WAN
+set [ find default-name=ether3 ] name=ether3_SW2
+set [ find default-name=ether5 ] name=ether5_SW1
+/interface wireless
+set [ find default-name=wlan1 ] band=2ghz-b/g/n channel-width=20/40mhz-XX distance=indoors frequency=auto installation=indoor mode=ap-bridge ssid=MikroTik-39CD6F \
+    wireless-protocol=802.11
+/interface vlan
+add interface=BR_MAIN name=vlan30 vlan-id=30
+add interface=BR_MAIN name=vlan31 vlan-id=31
+/interface ethernet switch port
+set 1 default-vlan-id=1
+set 2 default-vlan-id=1
+set 3 default-vlan-id=1
+set 4 default-vlan-id=1
+set 5 default-vlan-id=1
+/interface list
+add comment=defconf name=WAN
+add comment=defconf name=LAN
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/ip pool
+add name=default-dhcp ranges=192.168.88.10-192.168.88.254
+/user group
+set full policy=local,telnet,ssh,ftp,reboot,read,write,policy,test,winbox,password,web,sniff,sensitive,api,romon,dude,tikapp
+/interface bridge port
+add bridge=BR_MAIN interface=ether2
+add bridge=BR_MAIN interface=ether4
+add bridge=BR_MAIN interface=wlan1
+add bridge=BR_MAIN interface=ether3_SW2
+add bridge=BR_MAIN interface=ether5_SW1 pvid=30
+/ip neighbor discovery-settings
+set discover-interface-list=all
+/interface bridge vlan
+add bridge=BR_MAIN tagged=ether5_SW1,BR_MAIN vlan-ids=31
+add bridge=BR_MAIN tagged=BR_MAIN untagged=ether5_SW1,ether3_SW2 vlan-ids=30
+/ip address
+add address=192.168.30.3/24 interface=vlan30 network=192.168.30.0
+add address=172.16.31.3/24 interface=vlan31 network=172.16.31.0
+/ip dhcp-client
+add comment=defconf disabled=no interface=ether1_WAN
+add disabled=no interface=vlan31
+/ip dns
+set allow-remote-requests=yes
+/ip firewall nat
+add action=masquerade chain=srcnat out-interface=ether1_WAN
+/ip service
+set telnet disabled=yes
+set ftp disabled=yes
+set www disabled=yes
+set api disabled=yes
+set api-ssl disabled=yes
+/system clock
+set time-zone-name=Europe/Moscow
+/system identity
+set name=R1
+[roma@R1] >
