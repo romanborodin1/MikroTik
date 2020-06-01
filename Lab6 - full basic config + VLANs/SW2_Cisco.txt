@@ -1,0 +1,143 @@
+SW2#wr
+Building configuration...
+[OK]
+SW2#sh run
+Building configuration...
+
+Current configuration : 2216 bytes
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SW2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+username roma privilege 15 secret 5 $1$s9oj$LZ8SbT0h0nw0eWklvcyZ21
+!
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization exec default local if-authenticated 
+!
+!
+!
+aaa session-id common
+switch 1 provision ws-c3750g-24ts-1u
+system mtu routing 1500
+ip domain-name sobinnt.sbnk.biz
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree loopguard default
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!         
+!
+!
+interface GigabitEthernet1/0/1
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 30
+ switchport trunk allowed vlan 30,31
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/2
+ switchport access vlan 30
+!
+interface GigabitEthernet1/0/3
+ switchport access vlan 31
+!
+interface GigabitEthernet1/0/4
+!
+interface GigabitEthernet1/0/5
+!
+interface GigabitEthernet1/0/6
+!
+interface GigabitEthernet1/0/7
+!         
+interface GigabitEthernet1/0/8
+!
+interface GigabitEthernet1/0/9
+!
+interface GigabitEthernet1/0/10
+!
+interface GigabitEthernet1/0/11
+!
+interface GigabitEthernet1/0/12
+!
+interface GigabitEthernet1/0/13
+!
+interface GigabitEthernet1/0/14
+!
+interface GigabitEthernet1/0/15
+!
+interface GigabitEthernet1/0/16
+!
+interface GigabitEthernet1/0/17
+!
+interface GigabitEthernet1/0/18
+!         
+interface GigabitEthernet1/0/19
+!
+interface GigabitEthernet1/0/20
+!
+interface GigabitEthernet1/0/21
+!
+interface GigabitEthernet1/0/22
+!
+interface GigabitEthernet1/0/23
+!
+interface GigabitEthernet1/0/24
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 30
+ switchport trunk allowed vlan 30,31
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/25
+!
+interface GigabitEthernet1/0/26
+!
+interface GigabitEthernet1/0/27
+!         
+interface GigabitEthernet1/0/28
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan30
+ ip address 192.168.30.2 255.255.255.0
+!
+interface Vlan31
+ ip address 172.16.31.2 255.255.255.0
+!
+ip classless
+no ip http server
+no ip http secure-server
+!
+!
+vstack
+!
+line con 0
+ exec-timeout 600 0
+ logging synchronous
+line vty 5 15
+!
+end
+
+SW2# 
