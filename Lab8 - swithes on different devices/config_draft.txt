@@ -1,0 +1,16 @@
+# 2011UiAS-2HnD. It was set up like this:
+/interface ethernet switch port
+set 1 default-vlan-id=1
+set 2 default-vlan-id=30 vlan-header=add-if-missing vlan-mode=secure
+set 3 default-vlan-id=30 vlan-header=always-strip vlan-mode=secure
+set 4 default-vlan-id=30 vlan-header=always-strip vlan-mode=secure
+set 5 default-vlan-id=30 vlan-header=always-strip vlan-mode=secure
+set 11 vlan-mode=secure
+/interface ethernet switch vlan
+add independent-learning=yes ports=ether2,ether3,ether4,ether5,switch1-cpu switch=switch1 vlan-id=30
+add independent-learning=yes ports=ether2,ether3,ether4,ether5,switch1-cpu switch=switch1 vlan-id=31
+
+
+
+# New 2011UiAS-2HnD switch Atheros-8227 config:
+/interface ethernet switch port set 
